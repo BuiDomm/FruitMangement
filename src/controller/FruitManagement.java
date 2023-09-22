@@ -11,10 +11,6 @@ import model.Fruit;
 import model.Order;
 import view.Menu;
 
-/**
- *
- * @author ASUS
- */
 public class FruitManagement extends Menu<String> {
 
     static String[] mc = {"Create Fruit", "View Orders", "Shopping (for buyer)"};
@@ -37,16 +33,12 @@ public class FruitManagement extends Menu<String> {
             case 2: {
                 listOrderItem();
                 break;
-
             }
             case 3: {
                 buyItem();
                 break;
-
             }
-
         }
-
     }
 
     public int autoCreasingID() {
@@ -78,7 +70,6 @@ public class FruitManagement extends Menu<String> {
                 return;
             }
         }
-
     }
 
     public void listOrderItem() {
@@ -95,21 +86,21 @@ public class FruitManagement extends Menu<String> {
 
     public void displayListFruit() {
         System.out.println("======================LIST FRUIT WE HAVE=============================");
+        System.out.printf("%-7s|%-20s|%-9s|%-15s|%-10s\n", " ++ Item ++ ", "++ Fruit Name ++ ", "++ Origin ++ ", "++ Price ++", "++ Quantity ++| ");
         for (Fruit f : listFruit) {
             if (f.getQuantity() <= 0) {
                 continue;
             }
-            System.out.println("Id: " + f.getId() + " - Name: " + f.getName() + " - Price: " + f.getPrice() + " - quantity:" + f.getQuantity() + " - origin: " + f.getOrigin());
-
+            System.out.printf("%-14s%-20s%-17s%-15f%-10d\n", f.getId(), f.getName(), f.getOrigin(), f.getPrice(), f.getQuantity());
         }
     }
 
     public void buyItem() {
         while (true) {
-                if(listFruit.isEmpty()) { 
-                    System.out.println("List is empty.");
-                    return;
-                }
+            if (listFruit.isEmpty()) {
+                System.out.println("List is empty.");
+                return;
+            }
             displayListFruit();
             int item = lib.getInt("Select item:", 1, listFruit.size());
             System.out.println("You selected:" + listFruit.get(item - 1).getName());
@@ -137,9 +128,10 @@ public class FruitManagement extends Menu<String> {
                 }
             }
             String con = lib.getValue("Do you want to continue Y/N:");
-            if (con.equals("Y")) {
+            if (con.equalsIgnoreCase("y")) {
                 continue;
-            } else {
+            }
+            else if (con.equalsIgnoreCase("n")) {
                 return;
             }
         }
@@ -147,11 +139,12 @@ public class FruitManagement extends Menu<String> {
 
     private void displayListOrder(ArrayList<Order> listOrder) {
         double total = 0;
+        System.out.printf("%-10s|%-15s|%-9s|%-5s\n", " Product", "Quantity  ", "Price  ", "Amount");
         for (Order o : listOrder) {
-            System.out.println("Id: " + o.getId() + " - Customer of name: " + o.getName() + " - quanlity: " + o.getQuanlity() + " - price: " + o.getPrice());
+            System.out.printf("%-10s%-18d%-9s%-5f\n", o.getId(), o.getQuanlity(), o.getPrice() + "$", o.getPrice() * o.getQuanlity());
             total += o.getPrice() * o.getQuanlity();
         }
-        System.out.println("Total: " + total);
+        System.out.println("Total: " + total + "$");
     }
 
 }
