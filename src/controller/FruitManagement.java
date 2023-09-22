@@ -105,31 +105,42 @@ public class FruitManagement extends Menu<String> {
     }
 
     public void buyItem() {
-
-        displayListFruit();
-        int item = lib.getInt("Select item:", 1, listFruit.size());
-        System.out.println("You selected:" + listFruit.get(item - 1).getName());
-        int quantityOrder = lib.checkInt("Please input quantity", 1, 100);
-        ArrayList<Order> listOrder = new ArrayList<>();
-        for (Fruit f : listFruit) {
-            if (item == f.getId()) {
-                int id = f.getId();
-                String name = f.getName();
-                double price = f.getPrice();
-                int quantity = f.getQuantity();
-                if (quantityOrder > quantity) {
-                    System.out.println("Quantity Order more than quantity");
-                    buyItem();
-                } else {
-                    quantity = quantity - quantityOrder;
-                    f.setQuantity(quantity);
-                    listOrder.add(new Order(id, name, quantityOrder, price));
-                    displayListOrder(listOrder);
-                    String customer = lib.getValue("Enter Customer of name: ");
-                    hashTableFruit.put(customer, listOrder);
-                    System.out.println("Add Successfull");
+        while (true) {
+                if(listFruit.isEmpty()) { 
+                    System.out.println("List is empty.");
+                    return;
                 }
-                break;
+            displayListFruit();
+            int item = lib.getInt("Select item:", 1, listFruit.size());
+            System.out.println("You selected:" + listFruit.get(item - 1).getName());
+            int quantityOrder = lib.checkInt("Please input quantity", 1, 100);
+            ArrayList<Order> listOrder = new ArrayList<>();
+            for (Fruit f : listFruit) {
+                if (item == f.getId()) {
+                    int id = f.getId();
+                    String name = f.getName();
+                    double price = f.getPrice();
+                    int quantity = f.getQuantity();
+                    if (quantityOrder > quantity) {
+                        System.out.println("Quantity Order more than quantity");
+                        buyItem();
+                    } else {
+                        quantity = quantity - quantityOrder;
+                        f.setQuantity(quantity);
+                        listOrder.add(new Order(id, name, quantityOrder, price));
+                        displayListOrder(listOrder);
+                        String customer = lib.getValue("Enter Customer of name: ");
+                        hashTableFruit.put(customer, listOrder);
+                        System.out.println("Add Successfull");
+                    }
+                    break;
+                }
+            }
+            String con = lib.getValue("Do you want to continue Y/N:");
+            if (con.equals("Y")) {
+                continue;
+            } else {
+                return;
             }
         }
     }
